@@ -27,26 +27,16 @@ public class LaundryListController implements Initializable {
     public User auth;
     private Connection conn;
     private Statement statement;
-    @FXML
-    private Label lblChange;
-    @FXML
-    private TextField txtId, txtCustomer, txtRemarks, txtWeight, txtAmountPaid, txtTotalAmount, txtChange;
-    @FXML
-    private JFXComboBox<Category> cmbCategory;
-    @FXML
-    private JFXComboBox<String> cmbStatus;
-    @FXML
-    private TableView<LaundryItem> tblLaundryList;
-    @FXML
-    private TableColumn<LaundryItem, Integer> colId;
-    @FXML
-    private TableColumn<LaundryItem, String> colCustomer, colCategory, colStatus;
-    @FXML
-    private TableColumn<LaundryItem, Float> colWeight, colTotalAmount;
-    @FXML
-    private TableColumn<LaundryItem, Date> colDate;
-    @FXML
-    private JFXButton btnCreate, btnUpdate, btnDelete;
+    @FXML private Label lblChange;
+    @FXML private TextField txtId, txtCustomer, txtRemarks, txtWeight, txtAmountPaid, txtTotalAmount, txtChange;
+    @FXML private JFXComboBox<Category> cmbCategory;
+    @FXML private JFXComboBox<String> cmbStatus;
+    @FXML private TableView<LaundryItem> tblLaundryList;
+    @FXML private TableColumn<LaundryItem, Integer> colId;
+    @FXML private TableColumn<LaundryItem, String> colCustomer, colCategory, colStatus;
+    @FXML private TableColumn<LaundryItem, Float> colWeight, colTotalAmount;
+    @FXML private TableColumn<LaundryItem, Date> colDate;
+    @FXML private JFXButton btnCreate, btnUpdate, btnDelete;
 
     public LaundryListController(User auth) {
         this.auth = auth;

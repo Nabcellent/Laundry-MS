@@ -23,7 +23,7 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 
 /**
- * _____________________________________________________    Nabangi Michael - ICS B - 134694, 21/03/2021    _________✔*/
+ * _____________________________________________________    GROUP PROJECT - ICS A, 21/03/2021    _________✔*/
 
 
 public class UserController implements Initializable {

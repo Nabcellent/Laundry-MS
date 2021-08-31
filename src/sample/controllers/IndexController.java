@@ -21,7 +21,6 @@ import sample.models.User;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-
 /**
  * _____________________________________________________    GROUP PROJECT - ICS A, 21/03/2021    _________✔*/
 

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="700.0" prefWidth="1300.0" stylesheets="@../Public/css/style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controllers.IndexController">
+    <AnchorPane fx:id="navOverlay" opacity="0.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #900;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="45.0" />
+    <BorderPane fx:id="mainPane" layoutX="-119.0" layoutY="-166.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <top>
+            <AnchorPane prefHeight="45.0" prefWidth="200.0" style="-fx-background-color: #002d;" BorderPane.alignment="CENTER">
+                <ImageView fx:id="imgMenuBtn" fitHeight="46.0" fitWidth="32.0" layoutX="8.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
+                    <Image url="@../Public/images/Nav/icons8-menu-48.png" />
+                </ImageView>
+                <Label fx:id="indexTitle" layoutX="62.0" layoutY="8.0" prefHeight="29.0" prefWidth="255.0" textFill="#fff">
+                    <font>
+                        <Font name="Padauk Book Bold" size="17.0" />
+                    </font>
+                </Label>
+                <Label alignment="CENTER" layoutX="586.0" layoutY="9.0" opacity="0.7" text="LAUNDRY-MS" textFill="WHITE" underline="true">
+                    <font>
+                        <Font name="Abyssinica SIL" size="20.0" />
+                    </font>
+                </Label>
+                <ImageView fx:id="imgExitBtn" fitHeight="46.0" fitWidth="32.0" layoutX="1254.0" layoutY="7.0" pickOnBounds="true" preserveRatio="true" styleClass="navIcon">
+                    <Image url="@../Public/images/Nav/icons8-cross-mark-button-48.png" />
+                </ImageView>
+            </AnchorPane>
+        </top>
+        <left>
+            <AnchorPane prefHeight="554.0" prefWidth="45.0" BorderPane.alignment="CENTER">
+                <AnchorPane prefHeight="554.0" prefWidth="45.0" style="-fx-background-color: white;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <VBox fx:id="navIcons" alignment="TOP_CENTER" layoutX="3.0" layoutY="50.0" prefHeight="200.0" prefWidth="44.0" spacing="10.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="20.0">
+                        <ImageView fx:id="imgHome" fitHeight="46.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" styleClass="navIcon">
+                            <Image url="@../Public/images/Nav/icons8-home-48.png" />
+                        </ImageView>
+                        <ImageView fx:id="imgLaundryList" fitHeight="46.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" styleClass="navIcon">
+                            <Image url="@../Public/images/Nav/icons8-todo-list.gif" />
+                        </ImageView>
+                        <ImageView fx:id="imgCategories" fitHeight="46.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" styleClass="navIcon">
+                            <Image url="@../Public/images/Nav/icons8-checklist.gif" />
+                        </ImageView>
+                        <ImageView fx:id="imgUsers" fitHeight="46.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" styleClass="navIcon">
+                            <Image url="@../Public/images/Nav/icons8-users-48.png" />
+                        </ImageView>
+                        <ImageView fx:id="imgLogout" fitHeight="46.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" styleClass="navIcon">
+                            <Image url="@../Public/images/Nav/icons8-logout-rounded-left-48.png" />
+                        </ImageView>
+                    </VBox>
+                </AnchorPane>
+            </AnchorPane>
+        </left>
+    </BorderPane>
+    <AnchorPane fx:id="navList" prefHeight="554.0" prefWidth="178.0" style="-fx-background-color: white;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="45.0">
+        <VBox fx:id="navButtons" prefHeight="200.0" prefWidth="100.0" spacing="4.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="20.0">
+            <JFXButton fx:id="btnHome" alignment="BASELINE_LEFT" onAction="#btnHomeAction" prefHeight="38.0" prefWidth="179.0" styleClass="navItem" text="Home">
+                <font>
+                    <Font name="System Bold" size="13.0" />
+                </font>
+            </JFXButton>
+            <JFXButton fx:id="btnLaundryList" alignment="BASELINE_LEFT" onAction="#btnLaundryListAction" prefHeight="38.0" prefWidth="179.0" styleClass="navItem" text="Laundry List">
+                <font>
+                    <Font name="System Bold" size="13.0" />
+                </font>
+            </JFXButton>
+            <JFXButton fx:id="btnCategories" alignment="BASELINE_LEFT" onAction="#btnCategoriesActions" prefHeight="38.0" prefWidth="179.0" styleClass="navItem" text="Laundry Category">
+                <font>
+                    <Font name="System Bold" size="13.0" />
+                </font>
+            </JFXButton>
+            <JFXButton fx:id="btnUsers" alignment="BASELINE_LEFT" onAction="#btnUsersAction" prefHeight="38.0" prefWidth="179.0" styleClass="navItem" text="Users">
+                <font>
+                    <Font name="System Bold" size="13.0" />
+                </font>
+            </JFXButton>
+            <JFXButton fx:id="btnLogout" alignment="BASELINE_LEFT" onAction="#btnLogoutAction" prefHeight="38.0" prefWidth="179.0" styleClass="navItem" text="Sign Out">
+                <font>
+                    <Font name="System Bold" size="13.0" />
+                </font>
+            </JFXButton>
+        </VBox>
+    </AnchorPane>
+</AnchorPane>

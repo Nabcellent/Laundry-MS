@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="635.0" prefWidth="1235.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+    <Label alignment="BASELINE_RIGHT" layoutX="1079.0" layoutY="601.0" prefHeight="20.0" prefWidth="142.0" text="\@Laundry.MS✓🩸">
+        <font>
+            <Font name="Rasa Light" size="13.0" />
+        </font>
+    </Label>
+   <VBox layoutX="173.0" layoutY="237.0" prefHeight="100.0" prefWidth="94.0" spacing="20.0">
+      <Label text="Title" />
+      <Label text="Price per KG" />
+   </VBox>
+   <VBox layoutX="267.0" layoutY="237.0" prefHeight="100.0" prefWidth="238.0" spacing="10.0">
+      <TextField fx:id="txtTitle" />
+      <TextField fx:id="txtPrice" />
+      <TextField fx:id="txtId" disable="true" visible="false" />
+   </VBox>
+   <TableView fx:id="tblCategories" layoutX="587.0" layoutY="140.0" prefHeight="293.0" prefWidth="431.0">
+     <columns>
+       <TableColumn fx:id="colId" prefWidth="29.0" text="ID" />
+       <TableColumn fx:id="colTitle" prefWidth="236.0" text="Title" />
+         <TableColumn fx:id="colPrice" prefWidth="165.0" text="Price per KG" />
+     </columns>
+   </TableView>
+   <HBox alignment="CENTER" layoutX="164.0" layoutY="395.0" prefHeight="100.0" prefWidth="341.0">
+      <JFXButton fx:id="btnCreate" buttonType="RAISED" prefWidth="100.0" style="-fx-background-color: #fff;" text="Create">
+         <graphic>
+            <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+               <Image url="@../Public/images/Nav/icons8-plus-+.gif" />
+            </ImageView>
+         </graphic>
+         <HBox.margin>
+            <Insets left="3.0" right="3.0" />
+         </HBox.margin>
+      </JFXButton>
+      <JFXButton fx:id="btnUpdate" buttonType="RAISED" prefWidth="100.0" style="-fx-background-color: #fff;" text="Update">
+         <graphic>
+            <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+               <Image url="@../Public/images/Nav/icons8-refresh.gif" />
+            </ImageView>
+         </graphic>
+         <HBox.margin>
+            <Insets left="3.0" right="3.0" />
+         </HBox.margin>
+      </JFXButton>
+      <JFXButton fx:id="btnDelete" buttonType="RAISED" prefWidth="100.0" style="-fx-background-color: #fff;" text="Delete">
+         <graphic>
+            <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+               <Image url="@../Public/images/Nav/icons8-waste.gif" />
+            </ImageView>
+         </graphic>
+         <HBox.margin>
+            <Insets left="3.0" right="3.0" />
+         </HBox.margin>
+      </JFXButton>
+   </HBox>
+   <JFXButton fx:id="btnReset" buttonType="RAISED" layoutX="307.0" layoutY="483.0" style="-fx-background-color: #fff;" text="Reset">
+      <graphic>
+         <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+               <Image url="@../Public/images/Nav/icons8-reset-48.png" />
+            </image></ImageView>
+      </graphic></JFXButton>
+</AnchorPane>

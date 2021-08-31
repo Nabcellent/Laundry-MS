@@ -21,6 +21,10 @@ import sample.models.User;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+
+/**
+ * _____________________________________________________    GROUP PROJECT - ICS A, 21/03/2021    _________✔*/
+
 public class IndexController implements Initializable {
     public User auth;
     @FXML private VBox navButtons, navIcons;

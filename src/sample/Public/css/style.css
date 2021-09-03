@@ -26,3 +26,7 @@
     -fx-background-color: rgb(100, 100, 228);
     -fx-text-fill: white;
 }
+
+.header {
+    -fx-background-color: rgba(0, 0, 34, 0.87);
+}

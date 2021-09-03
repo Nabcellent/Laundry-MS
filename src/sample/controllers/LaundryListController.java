@@ -10,6 +10,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import sample.database.MySql;
+import sample.helpers.Help;
 import sample.models.Category;
 import sample.models.LaundryItem;
 import sample.models.User;
@@ -27,8 +28,8 @@ public class LaundryListController implements Initializable {
     public User auth;
     private Connection conn;
     private Statement statement;
-    @FXML private Label lblChange;
-    @FXML private TextField txtId, txtCustomer, txtRemarks, txtWeight, txtAmountPaid, txtTotalAmount, txtChange;
+    @FXML private Label lblChange, lblError;
+    @FXML private TextField txtId, txtCustomer, txtWeight, txtAmountPaid, txtTotal, txtChange;
     @FXML private JFXComboBox<Category> cmbCategory;
     @FXML private JFXComboBox<String> cmbStatus;
     @FXML private TableView<LaundryItem> tblLaundryList;
@@ -36,7 +37,10 @@ public class LaundryListController implements Initializable {
     @FXML private TableColumn<LaundryItem, String> colCustomer, colCategory, colStatus;
     @FXML private TableColumn<LaundryItem, Float> colWeight, colTotalAmount;
     @FXML private TableColumn<LaundryItem, Date> colDate;
-    @FXML private JFXButton btnCreate, btnUpdate, btnDelete;
+    @FXML private JFXButton btnCreate, btnUpdate, btnDelete, btnReset;
+    private int categoryId;
+    private String customerInput, statusInput;
+    private float weightInput, amountPaidInput, unitPrice, totalPrice, change;
 
     public LaundryListController(User auth) {
         this.auth = auth;
@@ -52,16 +56,50 @@ public class LaundryListController implements Initializable {
         btnCreate.setOnMouseClicked(event -> createLaundry());
         btnUpdate.setOnMouseClicked(event -> updateLaundry());
         btnDelete.setOnMouseClicked(event -> deleteLaundry());
+        btnReset.setOnMouseClicked(event -> {
+            txtId.clear(); txtCustomer.clear(); txtWeight.clear();
+            txtAmountPaid.clear();txtTotal.clear();txtChange.clear();
+
+            cmbCategory.getSelectionModel().clearSelection();
+            cmbStatus.getSelectionModel().clearSelection();
+
+            btnCreate.setDisable(false); btnUpdate.setDisable(true); btnDelete.setDisable(true);
+        });
         tblLaundryList.setOnMouseClicked(event -> {
+            btnCreate.setDisable(true); btnUpdate.setDisable(false); btnDelete.setDisable(false);
+
             LaundryItem laundryItem = tblLaundryList.getSelectionModel().getSelectedItem();
             txtCustomer.setText(laundryItem.getCustomer());
-            txtRemarks.setText(laundryItem.getRemarks());
             txtWeight.setText(String.valueOf(laundryItem.getWeight()));
             txtAmountPaid.setText(String.valueOf(laundryItem.getAmountPaid()));
             txtId.setText(String.valueOf(laundryItem.getId()));
-            txtTotalAmount.setText(String.valueOf(laundryItem.getTotalAmount()));
 
-            setChange(laundryItem.getAmountPaid() - laundryItem.getTotalAmount());
+            ObservableList<Category> newCats = FXCollections.observableArrayList();
+            ObservableList<String> newStatuses = FXCollections.observableArrayList();
+
+            cmbCategory.getItems().forEach((cat) -> {
+                if (cat.getId() == laundryItem.getCategoryId()) {
+                    newCats.add(0, cat);
+                } else {
+                    newCats.add(cat);
+                }
+            });
+
+            cmbStatus.getItems().forEach((status) -> {
+                if (Objects.equals(status, laundryItem.getStatus())) {
+                    newStatuses.add(0, status);
+                } else {
+                    newStatuses.add(status);
+                }
+            });
+
+            cmbCategory.setItems(newCats);
+            cmbCategory.getSelectionModel().selectFirst();
+            cmbStatus.setItems(newStatuses);
+            cmbStatus.getSelectionModel().selectFirst();
+
+            txtTotal.setText(String.valueOf(laundryItem.getTotalAmount()));
+            txtChange.setText(String.valueOf(laundryItem.getAmountPaid() - laundryItem.getTotalAmount()));
         });
     }
 
@@ -89,7 +127,7 @@ public class LaundryListController implements Initializable {
     public void showLaundryItems() {
         ObservableList<LaundryItem> LaundryItemsList = FXCollections.observableArrayList();
         Connection conn = MySql.dbConnect();
-        String sql = "SELECT ll.*, li.weight, li.unit_price, lc.title FROM laundry_list ll " +
+        String sql = "SELECT ll.*, li.weight, li.unit_price, lc.title, lc.id as catId, lc.price FROM laundry_list ll " +
                 "INNER JOIN laundry_items li ON ll.id = li.laundry_id " +
                 "INNER JOIN categories lc on li.category_id = lc.id " +
                 "ORDER BY status, id;";
@@ -102,8 +140,10 @@ public class LaundryListController implements Initializable {
             while (results.next()) {
                 LaundryItemsList.add(new LaundryItem(
                         results.getInt("id"),
+                        results.getInt("catId"),
                         results.getString("customer_name"),
                         results.getString("title"),
+                        results.getFloat("price"),
                         results.getFloat("weight"),
                         results.getFloat("amount_paid"),
                         results.getFloat("total"),
@@ -126,63 +166,84 @@ public class LaundryListController implements Initializable {
         }
     }
 
+    boolean isValid() {
+        Help.setMessageTimer(5, lblError);
+
+        this.customerInput = txtCustomer.getText();
+
+        if(customerInput.equals("") || txtWeight.getText().equals("") || cmbCategory.getSelectionModel().isEmpty() || cmbStatus.getSelectionModel().isEmpty()) {
+            lblError.setText("Please fill in all required fields");
+            return false;
+        }
+
+        if(!Help.isNumeric(txtWeight.getText())) {
+            lblError.setText("Weight must be numeric");
+            return false;
+        }
+
+        if(!txtAmountPaid.getText().isEmpty() && !Help.isNumeric(txtAmountPaid.getText())){
+            lblError.setText("Amount paid must be numeric or left blank if no amount has been paid");
+            return false;
+        } else {
+            this.amountPaidInput = Objects.equals(txtAmountPaid.getText(), "") ? 0 : Float.parseFloat(txtAmountPaid.getText());
+        }
+
+        this.categoryId = cmbCategory.valueProperty().get().getId();
+        this.statusInput = cmbStatus.getValue();
+        this.weightInput = Float.parseFloat(txtWeight.getText());
+        this.unitPrice = cmbCategory.valueProperty().get().getPrice();
+        this.totalPrice = this.weightInput * this.unitPrice;
+
+        txtTotal.setText(String.valueOf(this.weightInput * this.unitPrice));
+        txtChange.setText(String.valueOf(this.amountPaidInput - totalPrice));
+
+        lblError.setText("");
+        return true;
+    }
+
     private void createLaundry() {
-        if (Objects.equals(txtRemarks.getText(), "")) txtRemarks.setText("none");
+        if(isValid()) {
+            String sql = "INSERT INTO `laundry_list` (`customer_name`, `total`, `amount_paid`, `date_created`) " +
+                    "VALUES ('" + this.customerInput + "', " + this.totalPrice + ", " + this.amountPaidInput + ", NOW())";
 
-        float weight = Float.parseFloat(txtWeight.getText()),
-                amountPaid = Objects.equals(txtAmountPaid.getText(), "") ? 0 : Float.parseFloat(txtAmountPaid.getText()),
-                unitPrice = cmbCategory.valueProperty().get().getPrice(),
-                totalPrice = weight * unitPrice;
+            try {
+                statement = conn.createStatement();
+                statement.executeUpdate(sql, Statement.RETURN_GENERATED_KEYS);
+                ResultSet result = statement.getGeneratedKeys();
 
-        String sql = "INSERT INTO `laundry_list` (`customer_name`, `total`, `amount_paid`, `remarks`, `date_created`) " +
-                "VALUES ('" + txtCustomer.getText() + "', " + totalPrice + ", " + txtAmountPaid.getText() + ", '" + txtRemarks.getText() + "', NOW())";
+                if (result.next()) {
+                    int laundryId = result.getInt(1);
 
-        try {
-            statement = conn.createStatement();
-            statement.executeUpdate(sql, Statement.RETURN_GENERATED_KEYS);
-            ResultSet result = statement.getGeneratedKeys();
+                    sql = "INSERT INTO laundry_items(laundry_id, category_id, weight, unit_price) " +
+                            "VALUES (" + laundryId + ", " + this.categoryId + ", " + this.weightInput + ", " + this.unitPrice + ")";
 
-            if (result.next()) {
-                int categoryId = cmbCategory.valueProperty().get().getId();
-                int laundryId = result.getInt(1);
-
-                sql = "INSERT INTO laundry_items(laundry_id, category_id, weight, unit_price) " +
-                        "VALUES (" + laundryId + ", " + categoryId + ", " + weight + ", " + unitPrice + ")";
-
-                conn.createStatement().executeUpdate(sql);
-                showLaundryItems();
-                setChange(amountPaid - totalPrice);
+                    conn.createStatement().executeUpdate(sql);
+                    showLaundryItems();
+                }
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
             }
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
         }
     }
 
     private void updateLaundry() {
-        if (Objects.equals(txtRemarks.getText(), "")) txtRemarks.setText("none");
+        if(isValid()) {
+            String sql = "UPDATE laundry_list SET customer_name = '" + this.customerInput + "', " +
+                    "status = '" + this.statusInput + "', total = '" + this.totalPrice + "', paid = " + (this.amountPaidInput >= this.totalPrice) + " " +
+                    "WHERE id = " + txtId.getText();
 
-        float weight = Float.parseFloat(txtWeight.getText()),
-                amountPaid = Objects.equals(txtAmountPaid.getText(), "") ? 0 : Float.parseFloat(txtAmountPaid.getText()),
-                unitPrice = cmbCategory.valueProperty().get().getPrice(),
-                totalPrice = weight * unitPrice;
-        int categoryId = cmbCategory.valueProperty().get().getId();
+            try {
+                statement = conn.createStatement();
+                statement.executeUpdate(sql);
 
-        String sql = "UPDATE laundry_list SET customer_name = '" + txtCustomer.getText() + "', " +
-                "status = '" + cmbStatus.getValue() + "', total = '" + totalPrice + "', paid = " + (amountPaid >= totalPrice) + " " +
-                "WHERE id = " + txtId.getText();
+                sql = "UPDATE laundry_items SET category_id = " + this.categoryId + ", weight = " + this.weightInput + ", unit_price = " + this.unitPrice + " " +
+                        "WHERE laundry_id = " + txtId.getText();
 
-        try {
-            statement = conn.createStatement();
-            statement.executeUpdate(sql);
-
-            sql = "UPDATE laundry_items SET category_id = " + categoryId + ", weight = " + weight + ", unit_price = " + unitPrice + " " +
-                    "WHERE laundry_id = " + txtId.getText();
-
-            conn.createStatement().executeUpdate(sql);
-            showLaundryItems();
-            setChange(amountPaid - totalPrice);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
+                conn.createStatement().executeUpdate(sql);
+                showLaundryItems();
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
         }
     }
 
@@ -195,17 +256,6 @@ public class LaundryListController implements Initializable {
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
-        }
-    }
-
-    void setChange(float change) {
-        if (change > 0) {
-            lblChange.setVisible(true);
-            txtChange.setText(String.valueOf(change));
-            txtChange.setVisible(true);
-        } else {
-            lblChange.setVisible(false);
-            txtChange.setVisible(false);
         }
     }
 

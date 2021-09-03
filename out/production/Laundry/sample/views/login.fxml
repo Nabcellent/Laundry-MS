@@ -23,12 +23,12 @@
             <ImageView fx:id="lockImageView" fitHeight="45.0" fitWidth="69.0" layoutX="271.0" layoutY="67.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="271.0" AnchorPane.rightAnchor="265.1486473083496">
                 <Image url="@../Public/images/Webp.net-resizeimage.png" />
             </ImageView>
-            <Label layoutX="153.0" layoutY="239.0" text="Email / Phone number" textFill="NAVY" />
-            <TextField fx:id="txtUsername" layoutX="153.0" layoutY="262.0" opacity="0.8" prefHeight="27.0" prefWidth="300.0" promptText="Email / phone number or admission no" style="-fx-border-width: 0 0 1 0; -fx-border-color: #000080; -fx-background-color: transparent;" />
+            <Label layoutX="153.0" layoutY="239.0" text="Username" textFill="NAVY" />
+            <TextField fx:id="txtUsername" layoutX="153.0" layoutY="262.0" opacity="0.8" prefHeight="27.0" prefWidth="300.0" promptText="Username" style="-fx-border-width: 0 0 1 0; -fx-border-color: #000080; -fx-background-color: transparent;" />
             <Label layoutX="153.0" layoutY="316.0" text="Password" textFill="NAVY" />
             <PasswordField fx:id="pwdPassword" layoutX="153.0" layoutY="337.0" opacity="0.8" prefHeight="27.0" prefWidth="300.0" promptText="Password" style="-fx-border-color: #000080; -fx-border-width: 0 0 1 0; -fx-background-color: transparent;" />
             <Button fx:id="btnLogin" contentDisplay="RIGHT" layoutX="153.0" layoutY="467.0" mnemonicParsing="false" onAction="#btnLoginOnAction" prefHeight="26.0" prefWidth="300.0" style="-fx-background-color: #900;" text="Sign In" textFill="WHITE" />
-            <Button fx:id="btnCancel" contentDisplay="RIGHT" layoutX="153.0" layoutY="504.0" mnemonicParsing="false" onAction="#btnCancelOnAction" prefHeight="26.0" prefWidth="300.0" style="-fx-background-color: rgb(100, 100, 120);" text="Cancel" textFill="WHITE" />
+            <Button fx:id="btnCancel" contentDisplay="RIGHT" layoutX="153.0" layoutY="504.0" mnemonicParsing="false" onAction="#btnCancelOnAction" prefHeight="26.0" prefWidth="300.0" style="-fx-background-color: rgb(100, 100, 120);" text="Exit" textFill="WHITE" />
             <Label fx:id="lblErrorMessage" alignment="CENTER" layoutX="103.0" layoutY="404.0" prefHeight="16.0" prefWidth="400.0" style="-fx-background-color: #fff;" textFill="#d00000" />
             <Label fx:id="lblLoginMessage" alignment="CENTER" layoutY="141.0" prefHeight="16.0" prefWidth="315.0" style="-fx-background-color: #fff;" textFill="#2dd707" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
         </AnchorPane>

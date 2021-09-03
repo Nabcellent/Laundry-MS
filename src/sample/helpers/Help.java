@@ -1,6 +1,5 @@
 package sample.helpers;
 
-import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.control.Label;
@@ -21,34 +20,25 @@ import java.sql.SQLException;
 
 public class Help {
     //++++++++++    VARIABLES
-    private static final String EMAIL_PATTERN = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@"
-            + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
     private static final String PHONE_PATTERN = "((^0[17]+)|(^[17]+)).*";
-
-
 
     /**
      * ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++    METHODS
      * */
     public static void setMessageTimer(int durationInSeconds, Label label) {
         Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(durationInSeconds), ev -> label.setText("")));
-        timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
     }
 
-    public static boolean isEmail(String email) {
-        return email.matches(EMAIL_PATTERN);
-    }
-
     public static boolean isNumeric(String strNum) {
-        if (strNum == null) {
-            return false;
-        }
+        if (strNum == null) return false;
+
         try {
             Double.parseDouble(strNum);
         } catch (NumberFormatException nfe) {
             return false;
         }
+
         return true;
     }
 
@@ -62,30 +52,6 @@ public class Help {
         imageView.setImage(image);
     }
 
-    public static boolean isInRange(double i) {
-        return !(i >= 0) || !(i <= 100);
-    }
-
-    public static boolean emailExists(String email) {
-        String query;
-        Connection connection = MySql.dbConnect();
-        PreparedStatement preparedStatement;
-        ResultSet resultSet;
-
-        query = "SELECT email FROM tbl_users where email = '" + email + "' LIMIT 1";
-
-        try {
-            assert false;
-            preparedStatement = connection.prepareStatement(query);
-            resultSet = preparedStatement.executeQuery();
-            return resultSet.next();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-
-        return false;
-    }
-
     public static boolean phoneExists(int phone, int id) {
         Connection connection = MySql.dbConnect();
         PreparedStatement preparedStatement;
@@ -94,9 +60,9 @@ public class Help {
         String query;
 
         if(id == 0) {
-            query = "SELECT phone FROM tbl_users where phone = '" + phone + "' LIMIT 1";
+            query = "SELECT phone FROM users where phone = '" + phone + "' LIMIT 1";
         } else {
-            query = "SELECT id, phone FROM tbl_users where phone = '" + phone + "' AND id != " + id + " LIMIT 1";
+            query = "SELECT id, phone FROM users where phone = '" + phone + "' AND id != " + id + " LIMIT 1";
         }
 
         try {

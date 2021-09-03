@@ -37,7 +37,7 @@
          </AnchorPane>
          <AnchorPane prefHeight="200.0" prefWidth="230.0" style="-fx-background-color: rgba(0, 0, 0, .7);">
             <children>
-               <Label layoutX="55.0" layoutY="42.0" text="Todays Customers" textFill="WHITE" />
+               <Label layoutX="55.0" layoutY="42.0" text="Today's Customers" textFill="WHITE" />
                <Label fx:id="lblCustomers" layoutX="207.0" layoutY="14.0" text="0" textFill="#4abff2">
                   <font>
                      <Font name="System Bold" size="13.0" />

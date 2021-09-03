@@ -39,9 +39,14 @@ public class LoginController implements Initializable {
         if(isValidForm()) {
             User auth = new User(txtUsername.getText(), pwdPassword.getText()).authenticate();
 
-            Frame.indexFrame(auth);
-            Stage stage = (Stage)btnLogin.getScene().getWindow();
-            stage.close();
+            if(auth.getId() != 0) {
+                Frame.indexFrame(auth);
+                Stage stage = (Stage)btnLogin.getScene().getWindow();
+                stage.close();
+            } else {
+                lblErrorMessage.setText("invalid Credentials");
+                Help.setMessageTimer(7, lblErrorMessage);
+            }
         } else {
             Help.setMessageTimer(7, lblErrorMessage);
         }

@@ -1,20 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.JFXButton?>
-<?import com.jfoenix.controls.JFXComboBox?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
+<?import com.jfoenix.controls.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="635.0" prefWidth="1235.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="635.0" prefWidth="1235.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <Label alignment="BASELINE_RIGHT" layoutX="1079.0" layoutY="601.0" prefHeight="20.0" prefWidth="142.0" text="\@Laundry.MS✓🩸">
         <font>
             <Font name="Rasa Light" size="13.0" />
@@ -53,7 +46,7 @@
             <Insets left="3.0" right="3.0" />
          </HBox.margin>
       </JFXButton>
-      <JFXButton fx:id="btnUpdate" buttonType="RAISED" prefWidth="100.0" style="-fx-background-color: #fff;" text="Update">
+      <JFXButton fx:id="btnUpdate" buttonType="RAISED" disable="true" prefWidth="100.0" style="-fx-background-color: #fff;" text="Update">
          <graphic>
             <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
                <Image url="@../Public/images/Nav/icons8-refresh.gif" />
@@ -63,7 +56,7 @@
             <Insets left="3.0" right="3.0" />
          </HBox.margin>
       </JFXButton>
-      <JFXButton fx:id="btnDelete" buttonType="RAISED" prefWidth="100.0" style="-fx-background-color: #fff;" text="Delete">
+      <JFXButton fx:id="btnDelete" buttonType="RAISED" disable="true" prefWidth="100.0" style="-fx-background-color: #fff;" text="Delete">
          <graphic>
             <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
                <Image url="@../Public/images/Nav/icons8-waste.gif" />
@@ -82,4 +75,5 @@
             </image>
          </ImageView>
       </graphic></JFXButton>
+   <Label fx:id="lblError" alignment="CENTER" layoutX="269.0" layoutY="45.0" prefHeight="16.0" prefWidth="698.0" textFill="#e10202" />
 </AnchorPane>

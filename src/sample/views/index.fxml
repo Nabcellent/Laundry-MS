@@ -10,7 +10,7 @@
     <AnchorPane fx:id="navOverlay" opacity="0.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #900;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="45.0" />
     <BorderPane fx:id="mainPane" layoutX="-119.0" layoutY="-166.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <top>
-            <AnchorPane prefHeight="45.0" prefWidth="200.0" style="-fx-background-color: #002d;" BorderPane.alignment="CENTER">
+            <AnchorPane prefHeight="45.0" prefWidth="200.0" styleClass="header" stylesheets="@../Public/css/style.css" BorderPane.alignment="CENTER">
                 <ImageView fx:id="imgMenuBtn" fitHeight="46.0" fitWidth="32.0" layoutX="8.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
                     <Image url="@../Public/images/Nav/icons8-menu-48.png" />
                 </ImageView>

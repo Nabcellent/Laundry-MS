@@ -7,12 +7,10 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import sample.database.MySql;
+import sample.helpers.Help;
 import sample.models.User;
 
 import java.net.URL;
@@ -29,12 +27,16 @@ import java.util.ResourceBundle;
 public class UserController implements Initializable {
     public User auth;
     private Connection conn;
+    @FXML private Label lblError;
     @FXML private TextField txtId, txtName, txtUsername, txtPhone;
     @FXML private JFXComboBox<UserType> cmbUserType;
     @FXML private TableView<User> tblUsers;
     @FXML private TableColumn<User, Integer> colId, colPhone;
     @FXML private TableColumn<User, String> colName, colUsername, colUserType;
-    @FXML private JFXButton btnCreate, btnUpdate, btnDelete;
+    @FXML private JFXButton btnCreate, btnUpdate, btnDelete, btnReset;
+    private String name, username;
+    private int phone;
+    private boolean isAdmin;
 
     public UserController(User auth) {
         this.auth = auth;
@@ -56,7 +58,18 @@ public class UserController implements Initializable {
         btnCreate.setOnMouseClicked(event -> createUser());
         btnUpdate.setOnMouseClicked(event -> updateUser());
         btnDelete.setOnMouseClicked(event -> deleteUser());
+        btnReset.setOnMouseClicked(event -> {
+            txtId.clear();
+            txtName.clear();
+            txtUsername.clear();
+            txtPhone.clear();
+            cmbUserType.getSelectionModel().clearSelection();
+
+            btnCreate.setDisable(false); btnUpdate.setDisable(true); btnDelete.setDisable(true);
+        });
         tblUsers.setOnMouseClicked(event -> {
+            btnCreate.setDisable(true); btnUpdate.setDisable(false); btnDelete.setDisable(false);
+
             User user = tblUsers.getSelectionModel().getSelectedItem();
             txtId.setText(String.valueOf(user.getId()));
             txtName.setText(user.getName());
@@ -110,35 +123,62 @@ public class UserController implements Initializable {
         }
     }
 
+    private boolean isValid() {
+        Help.setMessageTimer(5, lblError);
+
+        this.name = txtName.getText();
+        this.username = txtUsername.getText();
+
+        if(Objects.equals(this.name, "") || Objects.equals(this.username, "") || cmbUserType.getSelectionModel().isEmpty()) {
+            lblError.setText("Please fill in all fields");
+            return false;
+        }
+
+        if(!txtPhone.getText().isEmpty()) {
+            if(Help.isNumeric(txtPhone.getText())) {
+                this.phone = Objects.equals(txtPhone.getText(), "") ? 0 : Integer.parseInt(txtPhone.getText());
+
+                if(Help.phoneExists(this.phone, String.valueOf(auth.getId()).equals(txtId.getText()) ? auth.getId() : 0)) {
+                    lblError.setText("This phone number is already in use.");
+                    return false;
+                }
+            } else {
+                lblError.setText("Phone number must be numeric.");
+                return false;
+            }
+        }
+
+        lblError.setText("");
+        return true;
+    }
+
     private void createUser() {
-        int phone = Objects.equals(txtPhone.getText(), "") ? 0 : Integer.parseInt(txtPhone.getText());
-        boolean isAdmin = cmbUserType.valueProperty().get().isAdmin();
+        if(isValid()) {
+            String sql = "INSERT INTO `users` (`name`, `username`, `phone`, `password`, `type`) " +
+                    "VALUES ('" + this.name + "', '" + this.username + "', " + phone + ", 'LMS', " + isAdmin + ")";
 
-        String sql = "INSERT INTO `users` (`name`, `username`, `phone`, `password`, `type`) " +
-                "VALUES ('" + txtName.getText() + "', '" + txtUsername.getText() + "', " + phone + ", 'LMS', " + isAdmin + ")";
-
-        try {
-            conn.createStatement().executeUpdate(sql);
-            showUsers();
-        } catch(Exception e) {
-            e.printStackTrace();
-            System.out.println(e.getMessage());
+            try {
+                conn.createStatement().executeUpdate(sql);
+                showUsers();
+            } catch(Exception e) {
+                e.printStackTrace();
+                System.out.println(e.getMessage());
+            }
         }
     }
 
     private void updateUser() {
-        int phone = Objects.equals(txtPhone.getText(), "") ? 0 : Integer.parseInt(txtPhone.getText());
-        boolean isAdmin = cmbUserType.valueProperty().get().isAdmin();
+        if(isValid()) {
+            String sql = "UPDATE users SET name = '" + this.name + "', " +
+                    "username = '" + this.username + "', phone = " + phone + ", type = " + isAdmin + " " +
+                    "WHERE id = " + txtId.getText();
 
-        String sql = "UPDATE users SET name = '" + txtName.getText() + "', " +
-                "username = '" + txtUsername.getText() + "', phone = " + phone + ", type = " + isAdmin + " " +
-                "WHERE id = " + txtId.getText();
-
-        try {
-            conn.createStatement().executeUpdate(sql);
-            showUsers();
-        } catch(Exception e) {
-            System.out.println(e.getMessage());
+            try {
+                conn.createStatement().executeUpdate(sql);
+                showUsers();
+            } catch(Exception e) {
+                System.out.println(e.getMessage());
+            }
         }
     }
 

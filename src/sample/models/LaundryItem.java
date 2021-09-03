@@ -4,13 +4,15 @@ import java.util.Date;
 
 public class LaundryItem {
     private Integer id, payStatus, categoryId;
-    private Float totalAmount, amountPaid, amountChange, weight, unitPrice, amount;
-    private String customer, status, remarks, categoryName;
+    private Float totalAmount, amountPaid, amountChange, weight, unitPrice, amount, categoryPrice;
+    private String customer, status, categoryName;
     private Date dateCreated;
 
-    public LaundryItem(int id, String customer, String categoryName, float weight, float amountPaid, float totalAmount, String status, Date dateCreated) {
+    public LaundryItem(int id, int categoryId, String customer, String categoryName, float categoryPrice, float weight, float amountPaid, float totalAmount, String status, Date dateCreated) {
         this.id = id;
+        this.categoryId = categoryId;
         this.categoryName = categoryName;
+        this.categoryPrice = categoryPrice;
         this.customer = customer;
         this.weight = weight;
         this.totalAmount = totalAmount;
@@ -47,10 +49,6 @@ public class LaundryItem {
         return customer;
     }
 
-    public String getRemarks() {
-        return remarks;
-    }
-
     public Date getDateCreated() {
         return dateCreated;
     }
@@ -73,5 +71,9 @@ public class LaundryItem {
 
     public String getCategoryName() {
         return categoryName;
+    }
+
+    public Float getCategoryPrice() {
+        return categoryPrice;
     }
 }

@@ -17,3 +17,12 @@ public class Main extends Application {
         launch(args);
     }
 }
+
+/**
+ * TOPICS USED
+ *
+ * GUI
+ * JDBC
+ * ERROR HANDLING
+ * THREADS
+*/
